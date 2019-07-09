@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <div id="statistics-app" class="">
+        <div class="content">
+            <div class="rates mb20 flex-row cb ac"
+                 v-if="rates && rates.length > 0 && !isPrinting"
+                 :class="{cb: !isReviewing, ce: isReviewing}">
+              <div class="flex-row cc ac" v-if="!isReviewing">
+                  <div class="input-label flex-row cb"
+                  v-for="rate in rates" :key="rate.id">
+                    <label for=""><b>{{rate.name}}</b></label>
+                    <div class="underline flex-column cc ac">
+                      <input type="number" v-model="rate.value" :disabled="isReviewing">
+                    </div>
+                  </div>
+              </div>
+              <div class="options">
+                <button class="btn btn-primary" v-if="!isReviewing" @click="gradeCalculate" >预览</button>
+                <button class="btn btn-primary" v-if="isReviewing" @click="print">打印</button>
+                <button class="btn btn-primary" v-if="isReviewing" @click="isReviewing = false">返回</button>
+              </div>
+            </div>
+            <div class="grades mb20 flex-row cb ac">
+              <div class="grade-info flex-row cb ac">
+                <div class="input-label flex-row ac">
+                  <div class="underline flex-column cc ac">
+                    <input type="text" v-model="gradeInfo.curYear"  :disabled="isReviewing">
+                  </div>
+                  <label for="">年</label>
+                </div>
+                <div class="input-label flex-row ac">
+                  <div class="underline flex-column cc ac">
+                    <input type="text" v-model="gradeInfo.curSemester"  :disabled="isReviewing">
+                  </div>
+                  <label for="">学期</label>
+                </div>
+                <div class="input-label flex-row ac">
+                  <div class="underline flex-column cc ac">
+                    <input type="text" v-model="gradeInfo.curGrade"  :disabled="isReviewing">
+                  </div>
+                  <label for="">年级</label>
+                </div>
+                <div class="input-label flex-row ac">
+                  <div class="underline flex-column cc ac">
+                    <input type="text" v-model="gradeInfo.curClass"  :disabled="isReviewing">
+                  </div>
+                  <label for="">班级</label>
+                </div>
+                <div class="input-label flex-row ac">
+                  <div class="underline flex-column cc ac">
+                    <input type="text" v-model="gradeInfo.curCourse"  :disabled="isReviewing">
+                  </div>
+                  <label for="">科</label>
+                </div>
+                <div class="input-label flex-row ac">
+                    <label for="">期</label>
+                    <div class="underline flex-column cc ac">
+                      <input type="text" v-model="gradeInfo.curTerm"  :disabled="isReviewing">
+                    </div>
+                </div>
+                <span>成绩表</span>
+              </div>
+            </div>
+            <div class="students-tabel mb20">
+              <div class="students-thead flex-row">
+                  <div class="student-item flex-row cb ac">
+                      <span class="name"><b>姓名</b></span>
+                      <span class=grade><b>成绩</b></span>
+                  </div>
+                  <div class="student-item flex-row cb ac">
+                      <span class="name"><b>姓名</b></span>
+                      <span class=grade><b>成绩</b></span>
+                  </div>
+                  <div class="student-item flex-row cb ac">
+                      <span class="name"><b>姓名</b></span>
+                      <span class=grade><b>成绩</b></span>
+                  </div>
+                  <div class="student-item flex-row cb ac">
+                      <span class="name"><b>姓名</b></span>
+                      <span class=grade><b>成绩</b></span>
+                  </div>
+              </div>
+              <div class="students-tbody flex-row">
+                <div class="student-item flex-row cb ac" v-for="itm in tabel" v-key="itm.id">
+                  <div class="name">
+                    <input type="text" v-model="itm.name" @blur="onItemChanged('name',itm)"  :disabled="isReviewing">
+                  </div>
+                  <div class=grade>
+                    <input type="number" v-model="itm.grade" @blur="onItemChanged('grade', itm)"  :disabled="isReviewing">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="results flex-row cb ac">
+                <div class="input-label flex-row ac mb10">
+                  <label for="">总人数</label>
+                  <div class="underline flex-column cc ac">
+                    <span>{{results.totals}}</span>
+                  </div>
+                </div>
+                <div class="input-label flex-row ac mb10">
+                  <label for="">合格人数</label>
+                  <div class="underline flex-column cc ac">
+                    <span>{{results.totalsOfPassed}}</span>
+                  </div>
+                </div>
+                <div class="input-label flex-row ac mb10">
+                  <label for="">优秀人数</label>
+                  <div class="underline flex-column cc ac">
+                    <span>{{results.totalsOfOustandings}}</span>
+                  </div>
+                </div>
+                <div class="input-label flex-row ac mb10">
+                  <label for="">总分</label>
+                  <div class="underline flex-column cc ac">
+                    <span>{{results.totalScore}}</span>
+                  </div>
+                </div>
+                <div class="input-label flex-row ac mb10">
+                  <label for="">后30%的总分</label>
+                  <div class="underline flex-column cc ac">
+                    <span>{{results.totalScoreAfter30}}</span>
+                  </div>
+                </div>
+                <div class="input-label flex-row ac mb10">
+                  <label for="">合格率</label>
+                  <div class="underline flex-column cc ac">
+                    <span>{{results.passedRate}}</span>
+                  </div>
+                </div>
+                <div class="input-label flex-row ac mb10">
+                  <label for="">优秀率</label>
+                  <div class="underline flex-column cc ac">
+                    <span>{{results.oustandingRate}}</span>
+                  </div>
+                </div>
+                <div class="input-label flex-row ac mb10">
+                  <label for="">人平分</label>
+                  <div class="underline flex-column cc ac">
+                    <span>{{results.averageScore}}</span>
+                  </div>
+                </div>
+                <div class="input-label flex-row ac mb10">
+                  <label for="">后30%的人平分</label>
+                  <div class="underline flex-column cc ac">
+                    <span>{{results.averageScoreAfter30}}</span>
+                  </div>
+                </div>
+                <div class="input-label flex-row ac mb10">
+                  <label for="">四率总分</label>
+                  <div class="underline flex-column cc ac">
+                    <span>{{results.totalScoreOf4Rate}}</span>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js" integrity="sha384-7aThvCh9TypR7fIc2HV4O/nFMVCBwyIUKL8XCtKE+8xgCgl/PQGuFsvShjr74PBp" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="./js/script.js"></script>
+</body>
+</html>

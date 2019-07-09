@@ -1,0 +1,165 @@
+*, ::after, ::before {
+    box-sizing: initial;
+}
+
+html, body {
+    width: 100%;
+    margin: 0 auto;
+    font-size: 12px;
+}
+
+@media print {
+    body {
+        -webkit-print-color-adjust: exact;
+    } 
+    body .mb20 {
+        margin-bottom: 40px;
+    }
+    body .mb10 {
+        margin-bottom: 20px;
+    }
+    body .grade-info {
+        font-size: 26px;
+    }
+    body .students-tabel .student-item .name,
+    body .students-tabel .student-item .grade {
+        padding: 16px 0;
+    }
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+.cb { /* flex content at space between horizontal */
+    justify-content: space-between;
+}
+.cc { /* flex content at center horizontal */
+    justify-content: center;
+}
+.cs { /* flex content at start horizontal */
+    justify-content: flex-start;
+}
+.ce { /* flex content at end horizontal */
+    justify-content: flex-end;
+}
+.ac { /* flex content center vertical */
+    align-items: center;
+}
+
+.mb20 {
+    margin-bottom: 20px;
+}
+.mb10 {
+    margin-bottom: 10px;
+}
+
+label {
+    margin-bottom: 0
+}
+button {
+    height: 2rem;
+    line-height: 2rem;
+    box-sizing: border-box;
+}
+button.btn {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+button {
+    margin-left: 0.9rem;
+}
+
+.content {
+    width: 80%;
+    margin: 1.5rem auto;
+    font-size: 1.2rem;
+}
+.rates {
+    font-size: 1.2rem;
+}
+.rates span + span {
+    margin-left: 0.9rem;
+}
+.rates span u {
+    margin-left: 0.5rem;
+}
+.grade-info {
+    width: 100%;
+    font-size: 1.8rem;
+}
+.underline {
+    width: 6rem;
+    min-height: 1.875rem;
+    border-bottom: .0625rem solid #000000;
+    overflow: hidden;
+}
+.underline input,
+.students-tabel .student-item .name input,
+.students-tabel .student-item .grade input {
+    width: 100%;
+    text-align: center;
+    border: none;
+    background: transparent;
+}
+.underline input:focus,
+.students-tabel .student-item .name input:focus,
+.students-tabel .student-item .grade input:focus {
+    outline: none;
+}
+.grade-info label,
+.grade-info .input-label + span,
+.results label,
+.results .input-label + span {
+    font-weight: bold;
+}
+.grade-info span,
+.results span {
+    margin-right: 0.3rem;
+}
+.grade-info span u + b,
+.results span u + b {
+    margin-right: 0.2rem;
+}
+.students-tabel,
+.students-tabel .students-thead,
+.students-tabel .students-tbody {
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+.students-tabel .students-tbody {
+    display: flex;
+    flex-wrap: wrap;
+}
+.students-tabel {
+    border-top: .0625rem solid #000000;
+    border-left: .0625rem solid #000000;
+}
+.students-tabel .student-item {
+    width: 25%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.students-tabel .student-item .name,
+.students-tabel .student-item .grade {
+    width: 50%;
+    padding: .5rem 0;
+    text-align: center;
+    border-right: .0625rem solid #000000;
+    border-bottom: .0625rem solid #000000;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.results {
+    flex-wrap: wrap;
+    width: 100%;
+    font-size: 1.2rem;
+}
+.results .input-label {
+    margin-right: .625rem /* 10/16 */
+}
