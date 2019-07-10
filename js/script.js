@@ -31,13 +31,13 @@
             isReviewing: false,
             isPrinting: false
         },
-        mounted () {
+        mounted: function() {
             this.initRates()
             this.initGradeInfo()
             this.initTabel()
         },
         methods: {
-            initGradeInfo() {
+            initGradeInfo: function() {
                 let dt = new Date()
                 let mm = dt.getMonth() + 1 
                 this.gradeInfo.curYear = dt.getFullYear()
@@ -52,7 +52,7 @@
                     this.gradeInfo.curTerm = mm < 6 && 3 < mm ? '中' : '末'
                 }
             },
-            initRates() {
+            initRates: function() {
                 this.rates = new Array(
                     {id: 'rts_0', name: '及格率', value: 0.4}, 
                     {id: 'rts_1', name: '优秀率', value: 0.2}, 
@@ -60,20 +60,20 @@
                     {id: 'rts_3', name: '后30%人平分', value: 0.1}
                 )
             },
-            initTabel() {
+            initTabel: function() {
                 let len = this.tabel.length
                 for (let i = 0; i < 80; i++) {
                     this.tabel[len + i] = {
-                        id: `std_${len + i}`,
+                        id: 'std_' + (len + i),
                         name: null,
                         grade: null
                     }
                 }
             },
-            onItemChanged(key, item) {
+            onItemChanged: function(key, item) {
                 if (!item || !item.id || !key) return
 
-                let index = this.findIndex(this.students, (itm, idx) => {
+                let index = this.findIndex(this.students, function(itm, idx) {
                     return itm.hasOwnProperty('id') && item.id == itm.id // get the index of the insert item of the students
                 })
                 if ((index > -1 && this.isDiff(item, this.students[index], key)) || -1 == index) {
@@ -88,7 +88,7 @@
                 }
                 return
             },
-            gradeCalculate() {
+            gradeCalculate: function() {
                 if (!this.students || 0 == this.students.length) return;
 
                 this.isReviewing = true
@@ -130,31 +130,33 @@
                     totalScoreOf4Rate: totalScoreOf4Rate, // 四率总分
                     averageScore: averageScore, // 人平分
                     averageScoreAfter30: averageScoreAfter30, // 后30%的人平分
-                    passedRate: `${passedRate * 100}%`, // 合格率
-                    oustandingRate: `${oustandingRate * 100}%`, // 优秀率
+                    passedRate: (passedRate * 100) + '%', // 合格率
+                    oustandingRate: (oustandingRate * 100) + '%', // 优秀率
                 }
             },
-            print () {
+            print: function() {
                 this.isPrinting = true
 
-                setTimeout(() => {
+                setTimeout(function() {
                     window.print()
-                    setTimeout(() => {
+                    setTimeout(function() {
                         this.isPrinting = false
                     }, 1000)
                 }, 300)
             },
-            gradeCompare(itm1, itm2) {
+            gradeCompare: function(itm1, itm2) {
                 let g1 = itm1.grade, g2 = itm2.grade;
                 return g2 - g1
             },
-            getRound(num=0, len=2) {
+            getRound: function(num, len) {
+                num = num || 0
+                len = (len || 0 == len) ? len : 2
                 return Math.round(num * Math.pow(10, len)) / Math.pow(10, len)
             },
-            isDiff(cur, pre, key) {
+            isDiff: function(cur, pre, key) {
                 return (cur[key] || pre[key]) && (pre[key] != cur[key])
             },
-            findIndex(arr, callback) {
+            findIndex: function(arr, callback) {
                 let index = -1
                 if (arr && arr.length > 0) {
                     for (let i = 0; i < arr.length; i ++) {
