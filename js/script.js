@@ -29,15 +29,28 @@
                 oustandingRate: null, // 优秀率
             },
             isReviewing: false,
-            isPrinting: false
+            isPrinting: false,
+            historyList: []
         },
         mounted: function() {
-            this.initRates()
-            this.initGradeInfo()
-            this.initTabel()
+            this.init()
         },
         methods: {
+            init: function() {
+                this.initRates()
+                this.initGradeInfo()
+                this.initTabel()
+                this.historyList = localStorage.getItem('historyList') ? JSON.parse(localStorage.getItem('historyList')) : []
+            },
             initGradeInfo: function() {
+                this.gradeInfo = {
+                    curYear: '',
+                    curSemester: '',
+                    curGrade: '',
+                    curClass: '',
+                    curCourse: '',
+                    curTerm: ''
+                }
                 let dt = new Date()
                 let mm = dt.getMonth() + 1 
                 this.gradeInfo.curYear = dt.getFullYear()
@@ -61,10 +74,10 @@
                 )
             },
             initTabel: function() {
-                let len = this.tabel.length
+                this.tabel = new Array(80)
                 for (let i = 0; i < 80; i++) {
-                    this.tabel[len + i] = {
-                        id: 'std_' + (len + i),
+                    this.tabel[i] = {
+                        id: 'std_' + i,
                         name: null,
                         grade: null
                     }
@@ -134,14 +147,38 @@
                 }
             },
             print: function() {
+                this.setStorage()
                 this.isPrinting = true
-
                 setTimeout(function() {
                     window.print()
                     setTimeout(function() {
-                        this.isPrinting = false
+                        window.location.reload()
                     }, 1000)
                 }, 300)
+            },
+            setStorage: function() {
+                let curRecord = {
+                    timestamp: (new Date()).getFullYear() + '/' + ((new Date()).getMonth() + 1) + '/' + (new Date()).getDay() + ' ' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + ':' + (new Date()).getSeconds(),
+                    name: this.gradeInfo.curYear + '年 ' + this.gradeInfo.curSemester + '学期 ' + this.gradeInfo.curGrade + '年级 ' + this.gradeInfo.curClass + '班级 ' + this.gradeInfo.curCourse + '科 期' + this.gradeInfo.curTerm + '成绩表',
+                    tabel: this.tabel,
+                    students: this.students,
+                    rates: this.rates,
+                    gradeInfo: this.gradeInfo,
+                    // results: this.results
+                }
+                let historyList = localStorage.getItem('historyList') ? JSON.parse(localStorage.getItem('historyList')) : []
+                historyList.push(curRecord)
+                localStorage.setItem('historyList', JSON.stringify(historyList))
+            },
+            importRecord: function(record, index) {
+                this.tabel = record.tabel
+                this.students = record.students
+                this.rates = record.rates
+                this.gradeInfo = record.gradeInfo
+            },
+            removeRecord: function(record, index) {
+                this.historyList.splice(index, 1);
+                localStorage.setItem('historyList', JSON.stringify(this.historyList))
             },
             gradeCompare: function(itm1, itm2) {
                 let g1 = itm1.grade, g2 = itm2.grade;

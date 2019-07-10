@@ -9,21 +9,38 @@ html, body {
 }
 
 @media print {
+    @page {
+        /* size: auto; */
+        /* margin: 0mm; */
+    }
     body {
-        -webkit-print-color-adjust: exact;
+        /* -webkit-print-color-adjust: exact; */
+        /* margin: 1.6cm; */
     } 
     body .mb20 {
-        margin-bottom: 40px;
-    }
-    body .mb10 {
         margin-bottom: 20px;
     }
+    body .mb10 {
+        margin-bottom: 10px;
+    }
+    body .content {
+        width: 98%;
+        margin: 0 auto;
+        font-size: 14px;
+    }
     body .grade-info {
-        font-size: 26px;
+        font-size: 16px;
     }
     body .students-tabel .student-item .name,
     body .students-tabel .student-item .grade {
-        padding: 16px 0;
+        padding: 10px 0;
+    }
+    body input {
+        color: #000000;
+        /* font-weight: bold; */
+    }
+    body .grade-info input {
+        font-size: 16px;
     }
 }
 
@@ -57,13 +74,19 @@ html, body {
 .mb10 {
     margin-bottom: 10px;
 }
-
 label {
     margin-bottom: 0
 }
 button {
     height: 2rem;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
     line-height: 2rem;
+    color: #ffffff;
+    background-color: #007bff;
+    border-color: #007bff;
     box-sizing: border-box;
 }
 button.btn {
@@ -73,9 +96,12 @@ button.btn {
 button {
     margin-left: 0.9rem;
 }
+input {
+    font-size: 1.2rem;
+}
 
 .content {
-    width: 80%;
+    width: 90%;
     margin: 1.5rem auto;
     font-size: 1.2rem;
 }
@@ -90,6 +116,9 @@ button {
 }
 .grade-info {
     width: 100%;
+    font-size: 1.8rem;
+}
+.grade-info input {
     font-size: 1.8rem;
 }
 .underline {
@@ -162,4 +191,19 @@ button {
 }
 .results .input-label {
     margin-right: .625rem /* 10/16 */
+}
+.history {
+    margin-top: 20px;
+}
+.history span + span {
+    margin-left: 10px;
+}
+.history .options {
+    margin-left: 10px;
+}
+.history u {
+    cursor: pointer;
+}
+.history u + u {
+    margin-left: 10px;
 }
