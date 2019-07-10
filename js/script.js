@@ -80,7 +80,7 @@
                     if (index > -1) {
                         this.students[index][key] = item[key] // update value of the key
                     } else {
-                        this.students.push(Object.assign({}, item)) // copy value from the key of the item
+                        this.students.push(item) // copy value from the key of the item
                         index = this.students.length - 1 // and get new insert index
                     }
 
@@ -104,7 +104,6 @@
                     oustandingRate = 0; // 优秀率
 
                 this.students = this.students.sort(this.gradeCompare)
-                console.log(this.students)
                 totals = this.students.length
                 for (let i = 0; i < this.students.length; i ++) {
                     // totals ++;
